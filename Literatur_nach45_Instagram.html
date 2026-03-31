@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Instagram</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+
+<div class="topnav">
+  <div class="topnav-inner">
+    <a class="topnav-logo" href="#">Instagram</a>
+    <div class="topnav-icons">
+      <svg onclick="showView('home')" viewBox="0 0 24 24" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
+      <svg onclick="showView('search')" viewBox="0 0 24 24" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <svg viewBox="0 0 24 24" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+      <div class="bnav-av" onclick="showView('profile')" style="cursor:pointer;"><div class="bnav-av-in">&#128218;</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- HOME VIEW -->
+<div class="view active" id="view-home">
+  <div class="feed-tabs">
+    <div class="ftab active" id="ftab-foryou" onclick="switchTab('foryou')">F&#252;r dich</div>
+    <div class="ftab" id="ftab-following" onclick="switchTab('following')">Folge ich</div>
+  </div>
+  <div class="feed-wrap">
+    <div id="feed-foryou">
+      <div class="stories-bar" id="cat-stories"></div>
+      <div id="cat-posts"></div>
+    </div>
+    <div id="feed-following" style="display:none;">
+      <div class="stories-bar" id="lit-stories"></div>
+      <div id="lit-posts"></div>
+    </div>
+  </div>
+</div>
+
+<!-- SEARCH VIEW -->
+<div class="view" id="view-search">
+  <div class="search-wrap">
+    <div class="search-bar">
+      <svg viewBox="0 0 24 24" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" id="searchInput" placeholder="Suchen" oninput="handleSearch(this.value)">
+    </div>
+    <div id="search-default">
+      <div class="sec-title">Vorgeschlagen</div>
+      <div class="sacc-row" id="search-accs"></div>
+      <div class="sec-title">Erkunden</div>
+      <div class="eg" id="explore-grid"></div>
+    </div>
+    <div id="search-results" style="display:none;"></div>
+  </div>
+</div>
+
+<!-- PROFILE VIEW -->
+<div class="view" id="view-profile">
+  <div class="profile-wrap">
+    <div class="profile-header">
+      <div class="av-ring"><div class="av-inner">&#128218;</div></div>
+      <div class="profile-info">
+        <div class="ptop">
+          <span class="puname">literatur_nach45</span>
+          <button class="btn-f">Folgen</button>
+          <button class="btn-m">Nachricht</button>
+        </div>
+        <div class="pstats">
+          <div class="pstat"><div class="pstn">7</div><div class="pstl">Beitr&#228;ge</div></div>
+          <div class="pstat"><div class="pstn">1.847</div><div class="pstl">Follower</div></div>
+          <div class="pstat"><div class="pstn">12</div><div class="pstl">Gefolgt</div></div>
+        </div>
+        <div class="pname">&#128214; Literatur nach 1945</div>
+        <div class="pbio">
+          Stunde Null &middot; Tr&#252;mmerliteratur &middot; Gruppe 47<br>
+          Deutschsprachige Literatur nach dem Zweiten Weltkrieg &#127962;&#9997;<br>
+          Schulprojekt von <strong>Paul B&#252;rger</strong> &middot; Klasse 25G1<br>
+          <a href="#">#deutschunterricht #abitur #literatur</a>
+        </div>
+      </div>
+    </div>
+    <div class="highlights">
+      <div class="hl" onclick="openAcc('borchert')"><div class="hl-ring">&#9997;</div><div class="hl-name">Borchert</div></div>
+      <div class="hl" onclick="openAcc('boell')"><div class="hl-ring">&#127894;</div><div class="hl-name">B&#246;ll</div></div>
+      <div class="hl" onclick="openAcc('gruppe47')"><div class="hl-ring">&#128101;</div><div class="hl-name">Gruppe 47</div></div>
+      <div class="hl" onclick="openAcc('aichinger')"><div class="hl-ring">&#127800;</div><div class="hl-name">Aichinger</div></div>
+      <div class="hl" onclick="openAcc('schnurre')"><div class="hl-ring">&#128394;</div><div class="hl-name">Schnurre</div></div>
+    </div>
+    <div class="ptabs">
+      <div class="ptab active"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Beitr&#228;ge</div>
+      <div class="ptab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/></svg>Reels</div>
+    </div>
+  </div>
+  <div class="pgrid-wrap"><div class="pgrid" id="profile-grid"></div></div>
+</div>
+
+<!-- POST MODAL -->
+<div class="modal-bg hidden" id="postModal" onclick="bgClosePost(event)">
+  <button class="mnav-btn prev" id="mprev" onclick="mnavClick(-1)">&#8249;</button>
+  <button class="mnav-btn next" id="mnext" onclick="mnavClick(1)">&#8250;</button>
+  <div class="modal">
+    <div class="modal-img" id="mimg"><div class="swh">&#8592; wischen &#8594;</div></div>
+    <div class="modal-r">
+      <div class="mhdr">
+        <div class="mav"><div class="mav-in" id="mav-in"></div></div>
+        <div style="flex:1;">
+          <div class="mun" id="mun"></div>
+          <div class="mloc" id="mloc"></div>
+        </div>
+        <button class="mclose" onclick="closePost()">&#10005;</button>
+      </div>
+      <div class="mscroll">
+        <div class="mcap-row">
+          <div class="mcav"><div class="mcav-in" id="mcav-in"></div></div>
+          <div><div class="mctxt" id="mcap"></div><div class="mctime" id="mtime"></div></div>
+        </div>
+      </div>
+      <div class="mact">
+        <div class="mact-row">
+          <button class="abtn" id="mheart" onclick="toggleLike()"><svg viewBox="0 0 24 24" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button>
+          <button class="abtn"><svg viewBox="0 0 24 24" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></button>
+          <button class="abtn"><svg viewBox="0 0 24 24" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
+          <div class="sp"></div>
+          <button class="abtn"><svg viewBox="0 0 24 24" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg></button>
+        </div>
+        <div class="mlikes" id="mlikes"></div>
+      </div>
+      <div class="mcinput">
+        <span>&#128578;</span>
+        <input type="text" placeholder="Kommentar hinzuf&#252;gen ...">
+        <button class="pb">Posten</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ACCOUNT MODAL -->
+<div class="abg hidden" id="accModal" onclick="bgCloseAcc(event)">
+  <div class="amod">
+    <div class="ahdr" id="accHead"></div>
+    <div class="abody" id="accBody"></div>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="botnav">
+  <button class="bnbtn active" id="bnav-home" onclick="showView('home')"><svg viewBox="0 0 24 24" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg></button>
+  <button class="bnbtn" id="bnav-search" onclick="showView('search')"><svg viewBox="0 0 24 24" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></button>
+  <button class="bnbtn"><svg viewBox="0 0 24 24" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg></button>
+  <button class="bnbtn"><svg viewBox="0 0 24 24" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button>
+  <button class="bnbtn" id="bnav-profile" onclick="showView('profile')"><div class="bnav-av"><div class="bnav-av-in">&#128218;</div></div></button>
+</div>
+
+
+<script defer src="script.js"></script>
+</body>
+</html>
